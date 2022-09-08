@@ -3,4 +3,7 @@ project(GameLauncher_Core)
 
 set(CMAKE_CXX_STANDARD 17)
 
-add_executable(GameLauncher_Core main.cpp)
+add_executable(GameLauncher_Core src/main.cpp)
+
+target_include_directories(${PROJECT_NAME}
+        PUBLIC external/)
