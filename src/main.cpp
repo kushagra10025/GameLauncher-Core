@@ -6,6 +6,7 @@
 #include <nlohmann/json.hpp>
 
 #include "FileSystemHandler.h"
+#include "JSONPraseHandler.h"
 
 void print_paths(std::vector<std::filesystem::path> to_print){
     for(auto print : to_print){
@@ -57,13 +58,15 @@ int main(int argc, char* argv[]) {
     std::cout << versionFileExistence << std::endl;
 
     if(versionFileExistence){
-        std::string filePath = (pathToShow/"version.json").string();
-        std::ifstream file(filePath);
-        nlohmann::json dt = nlohmann::json::parse(file);
-        std::cout << std::setw(4) << dt << std::endl;
+        JSONPraseHandler jsonPraseHandler(pathToShow/"version.json");
         std::cout << std::endl;
-        auto vrsn = dt["version"].get<std::string>();
-        std::cout << vrsn << std::endl;
+        std::cout << std::setw(4) << jsonPraseHandler.getJSONFile() << std::endl;
+        std::cout << std::endl;
+        if (auto vrsn = jsonPraseHandler.getStringKey("version")) {
+            std::cout << "create2(true) returned " << vrsn.value() << '\n';
+        }else{
+            std::cout << "Version Key Doesn't Exist" << std::endl;
+        }
     }
 
     return 0;
