@@ -1,8 +1,17 @@
 #include <iostream>
+#include <vector>
 #include <fstream>
 #include <filesystem>
 #include <argparse/argparse.hpp>
 #include <nlohmann/json.hpp>
+
+#include "FileSystemHandler.h"
+
+void print_paths(std::vector<std::filesystem::path> to_print){
+    for(auto print : to_print){
+        std::cout << "..[ " << print.string() << " ].." << std::endl;
+    }
+}
 
 void print_entry_status(std::filesystem::file_status s)
 {
@@ -22,48 +31,32 @@ void print_entry_status(std::filesystem::file_status s)
     }
 }
 
-void get_entire_directory_structure(std::filesystem::path& pathToShow){
-    if(std::filesystem::exists(pathToShow) && std::filesystem::is_directory(pathToShow)){
-        for(const auto& entry : std::filesystem::recursive_directory_iterator(pathToShow)){
-            auto pathname = entry.path().string();
-
-            std::cout << pathname << " - ";
-            print_entry_status(entry.status());
-            std::cout << '\n';
-        }
-    }
-}
-
-void get_directory_structure(std::filesystem::path& pathToShow){
-    if(std::filesystem::exists(pathToShow) && std::filesystem::is_directory(pathToShow)){
-        for(const auto& entry: std::filesystem::directory_iterator(pathToShow)){
-            auto pathname = entry.path().string();
-            std::cout << pathname << " - ";
-            print_entry_status(entry.status());
-            std::cout << "\n";
-        }
-    }
-}
-
-bool does_file_exist_in_directory(std::filesystem::path dirToCheck, std::string fileName){
-    std::filesystem::path fileToCheck = dirToCheck / fileName;
-    return std::filesystem::exists(fileToCheck);
-}
-
 int main(int argc, char* argv[]) {
 //
 //    std::cout << "Added Libraries : " << std::endl;
 //    std::cout << "\t1. Argparse\n\t2. Nlohmann JSON\n\t3. std::filesystem" << std::endl;
 
+    GLC::FileSystemHandler fileSystemHandler;
+
     std::string initPath = "E:\\Libraries";
     std::filesystem::path pathToShow(initPath);
 
-//    get_entire_directory_structure(pathToShow);
-    get_directory_structure(pathToShow);
-    std::cout << std::boolalpha << does_file_exist_in_directory(pathToShow, "version.json");
-    std::cout << std::endl;
+    std::cout << "Entire Directory Structure\n";
+    std::vector<fs::path> allPathsInDirectory;
+    fileSystemHandler.GetEntireDirectoryStructure(pathToShow, allPathsInDirectory);
+    print_paths(allPathsInDirectory);
 
-    if(does_file_exist_in_directory(pathToShow, "version.json")){
+    std::cout << "\n\nCurrent Directory Structure\n";
+    std::vector<fs::path> pathsInDirectory;
+    fileSystemHandler.GetDirectoryStructure(pathToShow, pathsInDirectory);
+    print_paths(pathsInDirectory);
+
+    std::cout << "\n\nCheck if File \"version.json\" exists in Directory\n";
+    std::cout << std::boolalpha;
+    bool versionFileExistence = fileSystemHandler.DoesFileExistInDirectory(pathToShow, "version.json");
+    std::cout << versionFileExistence << std::endl;
+
+    if(versionFileExistence){
         std::string filePath = (pathToShow/"version.json").string();
         std::ifstream file(filePath);
         nlohmann::json dt = nlohmann::json::parse(file);
@@ -72,5 +65,6 @@ int main(int argc, char* argv[]) {
         auto vrsn = dt["version"].get<std::string>();
         std::cout << vrsn << std::endl;
     }
+
     return 0;
 }
