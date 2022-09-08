@@ -62,11 +62,9 @@ int main(int argc, char* argv[]) {
         std::cout << std::endl;
         std::cout << std::setw(4) << jsonPraseHandler.getJSONFile() << std::endl;
         std::cout << std::endl;
-        if (auto vrsn = jsonPraseHandler.getStringKey("version")) {
-            std::cout << "create2(true) returned " << vrsn.value() << '\n';
-        }else{
-            std::cout << "Version Key Doesn't Exist" << std::endl;
-        }
+
+        auto keyValue = jsonPraseHandler.getKey<std::string>("version");
+        std::cout << keyValue.value_or("Version Key Doesn't Exist") << std::endl;
     }
 
     return 0;

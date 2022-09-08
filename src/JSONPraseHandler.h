@@ -18,13 +18,16 @@ public:
     JSONPraseHandler(std::filesystem::path pathToVersionFile);
 
     nlohmann::json getJSONFile() const;
-    std::optional<std::string> getStringKey(const std::string& key) const;
-    std::optional<int32_t> getIntKey(const std::string& key) const;
-    std::optional<double> getDoubleKey(const std::string& key) const;
-    std::optional<bool> getBoolKey(const std::string& key) const;
 
-    nlohmann::json getJSONPatch(nlohmann::json checkDiffAgainst);
-    void applyJSONPatch(nlohmann::json patch);
+    template<typename T>
+    std::optional<T> getKey(const std::string& key) const{
+        if(!isJSONFileValid() || !isJSONKeyValid(key)) return std::nullopt;
+        T value = jsonFile[key].get<T>();
+        return std::optional<T>{value};
+    }
+
+    nlohmann::json getJSONPatch(const nlohmann::json& checkDiffAgainst);
+    void applyJSONPatch(const nlohmann::json& patch);
 };
 
 
