@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 #include <filesystem>
 #include <argparse/argparse.hpp>
 #include <nlohmann/json.hpp>
@@ -60,5 +61,16 @@ int main(int argc, char* argv[]) {
 //    get_entire_directory_structure(pathToShow);
     get_directory_structure(pathToShow);
     std::cout << std::boolalpha << does_file_exist_in_directory(pathToShow, "version.json");
+    std::cout << std::endl;
+
+    if(does_file_exist_in_directory(pathToShow, "version.json")){
+        std::string filePath = (pathToShow/"version.json").string();
+        std::ifstream file(filePath);
+        nlohmann::json dt = nlohmann::json::parse(file);
+        std::cout << std::setw(4) << dt << std::endl;
+        std::cout << std::endl;
+        auto vrsn = dt["version"].get<std::string>();
+        std::cout << vrsn << std::endl;
+    }
     return 0;
 }
