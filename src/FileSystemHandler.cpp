@@ -33,4 +33,60 @@ namespace GLC {
             }
         }
     }
+
+    void FileSystemHandler::GetCommonFilesInDirectories(const fs::path& dirA, const fs::path& dirB, std::vector<fs::path> &commonFiles) {
+        // TODO Try to Execute in Parallel
+        std::vector<fs::path> filesInDirA;
+        GetFilePathsInDirectory(dirA, filesInDirA);
+        GetRelativePaths(dirA, filesInDirA);
+        // TODO Try to Execute in Parallel
+        std::vector<fs::path> filesInDirB;
+        GetFilePathsInDirectory(dirB, filesInDirB);
+        GetRelativePaths(dirB, filesInDirB);
+
+        std::sort(filesInDirA.begin(), filesInDirA.end());
+        std::sort(filesInDirB.begin(), filesInDirB.end());
+
+        std::set_intersection(filesInDirA.begin(), filesInDirA.end(),
+                              filesInDirB.begin(), filesInDirB.end(),
+                              std::inserter(commonFiles, commonFiles.begin()));
+    }
+
+    void FileSystemHandler::GetDiffFilesInDirectory(const fs::path& dirA, const fs::path& dirB, std::vector<fs::path> &diffFiles) {
+        // TODO Try to Execute in Parallel
+        std::vector<fs::path> filesInDirA;
+        GetFilePathsInDirectory(dirA, filesInDirA);
+        GetRelativePaths(dirA, filesInDirA);
+        // TODO Try to Execute in Parallel
+        std::vector<fs::path> filesInDirB;
+        GetFilePathsInDirectory(dirB, filesInDirB);
+        GetRelativePaths(dirB, filesInDirB);
+
+        std::sort(filesInDirA.begin(), filesInDirA.end());
+        std::sort(filesInDirB.begin(), filesInDirB.end());
+
+        std::set_difference(filesInDirA.begin(), filesInDirA.end(),
+                            filesInDirB.begin(), filesInDirB.end(),
+                            std::inserter(diffFiles, diffFiles.begin()));
+    }
+
+    void FileSystemHandler::GetFilePathsInDirectory(const fs::path &dirA, std::vector<fs::path> &filePaths) {
+        GetEntireDirectoryStructure(dirA, filePaths);
+        // From the Entire Directory Structure remove all paths which are directory
+        filePaths.erase(std::remove_if(filePaths.begin(), filePaths.end(),
+                                       [](const fs::path& fP){return fs::is_directory(fP);}),
+                        filePaths.end());
+    }
+
+    void FileSystemHandler::GetRelativePaths(const fs::path &base, std::vector<fs::path> &filePaths) {
+        for(auto& filePath : filePaths){
+            filePath = fs::relative(filePath, base);
+        }
+    }
+
+    void FileSystemHandler::GetAbsolutePaths(const fs::path &base, std::vector<fs::path> &filePaths) {
+        for(auto& filePath : filePaths){
+            filePath = base / filePath;
+        }
+    }
 } // GLC

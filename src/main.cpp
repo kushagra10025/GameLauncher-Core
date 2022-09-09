@@ -10,7 +10,7 @@
 
 void print_paths(std::vector<std::filesystem::path> to_print){
     for(auto print : to_print){
-        std::cout << "..[ " << print.string() << " ].." << std::endl;
+        std::cout << "==[ " << print.string() << " ]==" << std::endl;
     }
 }
 
@@ -39,33 +39,73 @@ int main(int argc, char* argv[]) {
 
     GLC::FileSystemHandler fileSystemHandler;
 
-    std::string initPath = "E:\\Libraries";
-    std::filesystem::path pathToShow(initPath);
+//    std::string initPath = "E:\\Libraries";
+//    std::filesystem::path pathToShow(initPath);
 
-    std::cout << "Entire Directory Structure\n";
-    std::vector<fs::path> allPathsInDirectory;
-    fileSystemHandler.GetEntireDirectoryStructure(pathToShow, allPathsInDirectory);
-    print_paths(allPathsInDirectory);
+    std::string originalFolder = "E:\\DIffTestingFolder\\Original_Simple";
+    std::filesystem::path originalPath(originalFolder);
+    std::string updatedFolder = "E:\\DIffTestingFolder\\Update_Simple";
+    std::filesystem::path updatedPath(updatedFolder);
 
-    std::cout << "\n\nCurrent Directory Structure\n";
-    std::vector<fs::path> pathsInDirectory;
-    fileSystemHandler.GetDirectoryStructure(pathToShow, pathsInDirectory);
-    print_paths(pathsInDirectory);
+    std::cout << originalPath.string() << std::endl;
+    std::vector<std::filesystem::path> entireOriginalPathStruct;
+    fileSystemHandler.GetEntireDirectoryStructure(originalPath, entireOriginalPathStruct);
+    print_paths(entireOriginalPathStruct);
+    std::cout << std::endl;
 
-    std::cout << "\n\nCheck if File \"version.json\" exists in Directory\n";
-    std::cout << std::boolalpha;
-    bool versionFileExistence = fileSystemHandler.DoesFileExistInDirectory(pathToShow, "version.json");
-    std::cout << versionFileExistence << std::endl;
+    std::cout << updatedPath.string() << std::endl;
+    std::vector<std::filesystem::path> entireUpdatedPathStruct;
+    fileSystemHandler.GetEntireDirectoryStructure(updatedPath, entireUpdatedPathStruct);
+    print_paths(entireUpdatedPathStruct);
+    std::cout << std::endl;
 
-    if(versionFileExistence){
-        JSONPraseHandler jsonPraseHandler(pathToShow/"version.json");
-        std::cout << std::endl;
-        std::cout << std::setw(4) << jsonPraseHandler.getJSONFile() << std::endl;
-        std::cout << std::endl;
+    std::cout << "\n\nCommon Files\n";
+    std::vector<std::filesystem::path> commonFiles;
+    fileSystemHandler.GetCommonFilesInDirectories(originalPath, updatedPath, commonFiles);
+    print_paths(commonFiles);
+    // For Common File Paths, as the File Names are same, then Relative File Paths are Not an Issue
 
-        auto keyValue = jsonPraseHandler.getKey<std::string>("version");
-        std::cout << keyValue.value_or("Version Key Doesn't Exist") << std::endl;
-    }
+    std::cout << "\n\nAdded Files\n";
+    std::vector<std::filesystem::path> addedFiles;
+    fileSystemHandler.GetDiffFilesInDirectory(updatedPath, originalPath, addedFiles);
+    print_paths(addedFiles);
+    // For Added Files Paths, as we need to Provide them separately their Absolute File Paths are Required
+
+    std::cout << "\n\nRemoved Files\n";
+    std::vector<std::filesystem::path> removedFiles;
+    fileSystemHandler.GetDiffFilesInDirectory(originalPath, updatedPath, removedFiles);
+    print_paths(removedFiles);
+    // For Removed Files Paths, as we need to Remove them separately their Absolute File Paths are Required
+    // Catch here is, The Files will be removed only on Client and not on Dev System
+    // TODO Try to Solve the issue with the above mentioned catch.
+
+    std::cout << "\n\n";
+
+
+//    std::cout << "Entire Directory Structure\n";
+//    std::vector<fs::path> allPathsInDirectory;
+//    fileSystemHandler.GetEntireDirectoryStructure(pathToShow, allPathsInDirectory);
+//    print_paths(allPathsInDirectory);
+//
+//    std::cout << "\n\nCurrent Directory Structure\n";
+//    std::vector<fs::path> pathsInDirectory;
+//    fileSystemHandler.GetDirectoryStructure(pathToShow, pathsInDirectory);
+//    print_paths(pathsInDirectory);
+//
+//    std::cout << "\n\nCheck if File \"version.json\" exists in Directory\n";
+//    std::cout << std::boolalpha;
+//    bool versionFileExistence = fileSystemHandler.DoesFileExistInDirectory(pathToShow, "version.json");
+//    std::cout << versionFileExistence << std::endl;
+//
+//    if(versionFileExistence){
+//        JSONPraseHandler jsonPraseHandler(pathToShow/"version.json");
+//        std::cout << std::endl;
+//        std::cout << std::setw(4) << jsonPraseHandler.getJSONFile() << std::endl;
+//        std::cout << std::endl;
+//
+//        auto keyValue = jsonPraseHandler.getKey<std::string>("version");
+//        std::cout << keyValue.value_or("Version Key Doesn't Exist") << std::endl;
+//    }
 
     return 0;
 }
