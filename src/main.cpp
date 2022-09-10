@@ -6,7 +6,7 @@
 #include <nlohmann/json.hpp>
 
 #include "FileSystemHandler.h"
-#include "JSONPraseHandler.h"
+#include "JSONParseHandler.h"
 
 void print_paths(std::vector<std::filesystem::path> to_print){
     for(auto print : to_print){
@@ -41,6 +41,15 @@ int main(int argc, char* argv[]) {
 
 //    std::string initPath = "E:\\Libraries";
 //    std::filesystem::path pathToShow(initPath);
+
+//    SHA256 Test
+//    std::string versionFile = "E:\\Libraries\\version.json";
+//    std::filesystem::path versionFilePath(versionFile);
+//    if(fileSystemHandler.GetSHA256File(versionFilePath).has_value())
+//        std::cout << fileSystemHandler.GetSHA256File(versionFilePath).value();
+//    else
+//        std::cout << "Couldn't Create SHA-256";
+//    std::cout << "\n\n";
 
     std::string originalFolder = "E:\\DIffTestingFolder\\Original_Simple";
     std::filesystem::path originalPath(originalFolder);
@@ -79,6 +88,11 @@ int main(int argc, char* argv[]) {
     // Catch here is, The Files will be removed only on Client and not on Dev System
     // TODO Try to Solve the issue with the above mentioned catch.
 
+    std::cout << "\n\nModified Files\n";
+    std::vector<std::filesystem::path> modifiedFiles;
+    fileSystemHandler.GetModifiedFiles(updatedPath, originalPath, modifiedFiles);
+    print_paths(modifiedFiles);
+
     std::cout << "\n\n";
 
 
@@ -98,7 +112,7 @@ int main(int argc, char* argv[]) {
 //    std::cout << versionFileExistence << std::endl;
 //
 //    if(versionFileExistence){
-//        JSONPraseHandler jsonPraseHandler(pathToShow/"version.json");
+//        JSONParseHandler jsonPraseHandler(pathToShow/"version.json");
 //        std::cout << std::endl;
 //        std::cout << std::setw(4) << jsonPraseHandler.getJSONFile() << std::endl;
 //        std::cout << std::endl;
