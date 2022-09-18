@@ -3,7 +3,20 @@ project(GameLauncher_Core)
 
 set(CMAKE_CXX_STANDARD 17)
 
-add_executable(GameLauncher_Core src/main.cpp src/FileSystemHandler.cpp src/FileSystemHandler.h src/JSONParseHandler.cpp src/JSONParseHandler.h)
+set(GLC_SRC
+        src/main.cpp
+        src/FileSystemHandler.cpp
+        src/JSONParseHandler.cpp
+        src/ArchiveHandler.cpp
+        src/FileSystemHandler.h
+        src/JSONParseHandler.h
+        src/ArchiveHandler.h)
+
+add_subdirectory(external/kubazip/)
+
+add_executable(${PROJECT_NAME} ${GLC_SRC})
+
+target_link_libraries(${PROJECT_NAME} kubazip)
 
 target_include_directories(${PROJECT_NAME}
         PUBLIC external/)

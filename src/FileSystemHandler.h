@@ -26,7 +26,6 @@ namespace GLC {
         void GetCommonFilesInDirectories(const fs::path& dirA, const fs::path& dirB, std::vector<fs::path>& commonFiles);
         void GetDiffFilesInDirectory(const fs::path& dirA, const fs::path& dirB, std::vector<fs::path>& diffFiles);
 
-        // TODO Get Modified Files -> From All Common Files, get the Modified Files
         void GetModifiedFiles(const fs::path& dirA, const fs::path& dirB, std::vector<fs::path>& modifiedFiles);
 
         void GetFilePathsInDirectory(const fs::path& dirA, std::vector<fs::path>& filePaths);

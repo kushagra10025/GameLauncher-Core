@@ -7,6 +7,7 @@
 
 #include "FileSystemHandler.h"
 #include "JSONParseHandler.h"
+#include "ArchiveHandler.h"
 
 void print_paths(std::vector<std::filesystem::path> to_print){
     for(auto print : to_print){
@@ -33,11 +34,19 @@ void print_entry_status(std::filesystem::file_status s)
 }
 
 int main(int argc, char* argv[]) {
+
+    GLC::ArchiveHandler archiveHandler;
+    std::vector<std::filesystem::path> archiveFiles;
+    std::filesystem::path archivePath("E:\\BinaryTests\\zip_test.zip");
+
+    archiveHandler.GetAllArchiveFile(archivePath, archiveFiles);
+    print_paths(archiveFiles);
+
 //
 //    std::cout << "Added Libraries : " << std::endl;
 //    std::cout << "\t1. Argparse\n\t2. Nlohmann JSON\n\t3. std::filesystem" << std::endl;
 
-    GLC::FileSystemHandler fileSystemHandler;
+//    GLC::FileSystemHandler fileSystemHandler;
 
 //    std::string initPath = "E:\\Libraries";
 //    std::filesystem::path pathToShow(initPath);
@@ -51,49 +60,49 @@ int main(int argc, char* argv[]) {
 //        std::cout << "Couldn't Create SHA-256";
 //    std::cout << "\n\n";
 
-    std::string originalFolder = "E:\\DIffTestingFolder\\Original_Simple";
-    std::filesystem::path originalPath(originalFolder);
-    std::string updatedFolder = "E:\\DIffTestingFolder\\Update_Simple";
-    std::filesystem::path updatedPath(updatedFolder);
-
-    std::cout << originalPath.string() << std::endl;
-    std::vector<std::filesystem::path> entireOriginalPathStruct;
-    fileSystemHandler.GetEntireDirectoryStructure(originalPath, entireOriginalPathStruct);
-    print_paths(entireOriginalPathStruct);
-    std::cout << std::endl;
-
-    std::cout << updatedPath.string() << std::endl;
-    std::vector<std::filesystem::path> entireUpdatedPathStruct;
-    fileSystemHandler.GetEntireDirectoryStructure(updatedPath, entireUpdatedPathStruct);
-    print_paths(entireUpdatedPathStruct);
-    std::cout << std::endl;
-
-    std::cout << "\n\nCommon Files\n";
-    std::vector<std::filesystem::path> commonFiles;
-    fileSystemHandler.GetCommonFilesInDirectories(originalPath, updatedPath, commonFiles);
-    print_paths(commonFiles);
-    // For Common File Paths, as the File Names are same, then Relative File Paths are Not an Issue
-
-    std::cout << "\n\nAdded Files\n";
-    std::vector<std::filesystem::path> addedFiles;
-    fileSystemHandler.GetDiffFilesInDirectory(updatedPath, originalPath, addedFiles);
-    print_paths(addedFiles);
-    // For Added Files Paths, as we need to Provide them separately their Absolute File Paths are Required
-
-    std::cout << "\n\nRemoved Files\n";
-    std::vector<std::filesystem::path> removedFiles;
-    fileSystemHandler.GetDiffFilesInDirectory(originalPath, updatedPath, removedFiles);
-    print_paths(removedFiles);
-    // For Removed Files Paths, as we need to Remove them separately their Absolute File Paths are Required
-    // Catch here is, The Files will be removed only on Client and not on Dev System
-    // TODO Try to Solve the issue with the above mentioned catch.
-
-    std::cout << "\n\nModified Files\n";
-    std::vector<std::filesystem::path> modifiedFiles;
-    fileSystemHandler.GetModifiedFiles(updatedPath, originalPath, modifiedFiles);
-    print_paths(modifiedFiles);
-
-    std::cout << "\n\n";
+//    std::string originalFolder = "E:\\DIffTestingFolder\\Original_Simple";
+//    std::filesystem::path originalPath(originalFolder);
+//    std::string updatedFolder = "E:\\DIffTestingFolder\\Update_Simple";
+//    std::filesystem::path updatedPath(updatedFolder);
+//
+//    std::cout << originalPath.string() << std::endl;
+//    std::vector<std::filesystem::path> entireOriginalPathStruct;
+//    fileSystemHandler.GetEntireDirectoryStructure(originalPath, entireOriginalPathStruct);
+//    print_paths(entireOriginalPathStruct);
+//    std::cout << std::endl;
+//
+//    std::cout << updatedPath.string() << std::endl;
+//    std::vector<std::filesystem::path> entireUpdatedPathStruct;
+//    fileSystemHandler.GetEntireDirectoryStructure(updatedPath, entireUpdatedPathStruct);
+//    print_paths(entireUpdatedPathStruct);
+//    std::cout << std::endl;
+//
+//    std::cout << "\n\nCommon Files\n";
+//    std::vector<std::filesystem::path> commonFiles;
+//    fileSystemHandler.GetCommonFilesInDirectories(originalPath, updatedPath, commonFiles);
+//    print_paths(commonFiles);
+//    // For Common File Paths, as the File Names are same, then Relative File Paths are Not an Issue
+//
+//    std::cout << "\n\nAdded Files\n";
+//    std::vector<std::filesystem::path> addedFiles;
+//    fileSystemHandler.GetDiffFilesInDirectory(updatedPath, originalPath, addedFiles);
+//    print_paths(addedFiles);
+//    // For Added Files Paths, as we need to Provide them separately their Absolute File Paths are Required
+//
+//    std::cout << "\n\nRemoved Files\n";
+//    std::vector<std::filesystem::path> removedFiles;
+//    fileSystemHandler.GetDiffFilesInDirectory(originalPath, updatedPath, removedFiles);
+//    print_paths(removedFiles);
+//    // For Removed Files Paths, as we need to Remove them separately their Absolute File Paths are Required
+//    // Catch here is, The Files will be removed only on Client and not on Dev System
+//    // TODO Try to Solve the issue with the above mentioned catch.
+//
+//    std::cout << "\n\nModified Files\n";
+//    std::vector<std::filesystem::path> modifiedFiles;
+//    fileSystemHandler.GetModifiedFiles(updatedPath, originalPath, modifiedFiles);
+//    print_paths(modifiedFiles);
+//
+//    std::cout << "\n\n";
 
 
 //    std::cout << "Entire Directory Structure\n";
