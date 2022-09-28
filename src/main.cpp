@@ -36,11 +36,24 @@ void print_entry_status(std::filesystem::file_status s)
 int main(int argc, char* argv[]) {
 
     GLC::ArchiveHandler archiveHandler;
-    std::vector<std::filesystem::path> archiveFiles;
-    std::filesystem::path archivePath("E:\\BinaryTests\\zip_test.zip");
+    GLC::FileSystemHandler fileSystemHandler;
 
-    archiveHandler.GetAllArchiveFile(archivePath, archiveFiles);
-    print_paths(archiveFiles);
+    // List contents of an entire ZIP Archive
+    std::vector<std::filesystem::path> archiveFiles;
+    std::filesystem::path archivePath("E:\\BinaryTests\\libfolder.zip");
+
+//    archiveHandler.GetAllFilesInArchive(archivePath, archiveFiles);
+//    print_paths(archiveFiles);
+
+//    std::cout << std::endl;
+//    // Create a New Archive
+//    std::vector<std::filesystem::path> allPathsInDirectory;
+//    std::filesystem::path pathToCompress("E:\\Libraries");
+//    fileSystemHandler.GetEntireDirectoryStructure(pathToCompress, allPathsInDirectory);
+//    std::filesystem::path destZipLocation("E:\\BinaryTests\\libfolder.zip");
+//    std::cout << "Started Archiving ... " << std::endl;
+//    archiveHandler.CreateArchiveFromFolder(destZipLocation, allPathsInDirectory);
+//    std::cout << "Archiving Complete ... " << std::endl;
 
 //
 //    std::cout << "Added Libraries : " << std::endl;

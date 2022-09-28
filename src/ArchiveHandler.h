@@ -15,9 +15,11 @@ namespace GLC {
 
     class ArchiveHandler {
     public:
-        void GetAllArchiveFile(std::filesystem::path& archivePath, std::vector<std::filesystem::path>& archiveFiles);
-        // TODO Create Archive
-        // TODO Append Archive
+        void GetAllFilesInArchive(std::filesystem::path& archivePath, std::vector<std::filesystem::path>& archiveFiles);
+        void CreateArchiveFromFolder(const std::filesystem::path& archivePath, const std::vector<std::filesystem::path>& entireDirectoryStructure);
+        void CreateArchiveFromSingleFile(const std::filesystem::path& archivePath, const std::filesystem::path& fileToAddToArchive);
+        // TODO Append Archive with a Folder
+        // TODO Append Archive with a Single File
     };
 
 } // GLC
