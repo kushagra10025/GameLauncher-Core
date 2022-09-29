@@ -59,4 +59,40 @@ namespace GLC {
         zip_close(archive);
     }
 
+    void ArchiveHandler::AppendFolderToArchive(const std::filesystem::path &archivePath, const std::vector<std::filesystem::path> &appendDirectoryStructure) {
+        if(std::filesystem::is_directory(archivePath)){
+            return; // Path is a Directory
+        }
+        Archive* archive = zip_open(archivePath.string().c_str(), ZIP_DEFAULT_COMPRESSION_LEVEL, 'a');
+        {
+            for(const auto& filePath : appendDirectoryStructure){
+                if(std::filesystem::is_directory(filePath)) continue;
+                zip_entry_open(archive, std::filesystem::relative(filePath, filePath.root_path()).string().c_str());
+                {
+                    zip_entry_fwrite(archive, filePath.string().c_str());
+                }
+                zip_entry_close(archive);
+            }
+        }
+        zip_close(archive);
+    }
+
+    void ArchiveHandler::AppendFileToArchive(const std::filesystem::path &archivePath, const std::filesystem::path &fileToAppendToArchive) {
+        if(std::filesystem::is_directory(archivePath)){
+            return; // Path is a Directory
+        }
+        if(std::filesystem::is_directory(fileToAppendToArchive)){
+            return; // Path is a directory
+        }
+        Archive* archive = zip_open(archivePath.string().c_str(), ZIP_DEFAULT_COMPRESSION_LEVEL, 'a');
+        {
+            zip_entry_open(archive, std::filesystem::relative(fileToAppendToArchive, fileToAppendToArchive.root_path()).string().c_str());
+            {
+                zip_entry_fwrite(archive, fileToAppendToArchive.string().c_str());
+            }
+            zip_entry_close(archive);
+        }
+        zip_close(archive);
+    }
+
 } // GLC

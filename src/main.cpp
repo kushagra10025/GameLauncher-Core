@@ -46,6 +46,12 @@ int main(int argc, char* argv[]) {
 //    print_paths(archiveFiles);
 
 //    std::cout << std::endl;
+    // Append a File to Archive
+//    std::filesystem::path destZipLocation("E:\\BinaryTests\\libfolder.zip");
+//    std::filesystem::path targetFileToAppend("E:\\BinaryTests\\zip_test.zip");
+//    archiveHandler.AppendFileToArchive(destZipLocation, targetFileToAppend);
+
+//    std::cout << std::endl;
 //    // Create a New Archive
 //    std::vector<std::filesystem::path> allPathsInDirectory;
 //    std::filesystem::path pathToCompress("E:\\Libraries");

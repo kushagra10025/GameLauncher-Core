@@ -18,8 +18,8 @@ namespace GLC {
         void GetAllFilesInArchive(std::filesystem::path& archivePath, std::vector<std::filesystem::path>& archiveFiles);
         void CreateArchiveFromFolder(const std::filesystem::path& archivePath, const std::vector<std::filesystem::path>& entireDirectoryStructure);
         void CreateArchiveFromSingleFile(const std::filesystem::path& archivePath, const std::filesystem::path& fileToAddToArchive);
-        // TODO Append Archive with a Folder
-        // TODO Append Archive with a Single File
+        void AppendFolderToArchive(const std::filesystem::path& archivePath, const std::vector<std::filesystem::path>& appendDirectoryStructure);
+        void AppendFileToArchive(const std::filesystem::path& archivePath, const std::filesystem::path& fileToAppendToArchive);
     };
 
 } // GLC
